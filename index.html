@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        main {
+            padding: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Product Viewer</h1>
+    </header>
+    <main>
+        <label for="jsonFile">Select JSON File:</label>
+        <input type="file" id="jsonFile" accept=".json">
+        <button onclick="loadData()">Load Data</button>
+
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Subcategory</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Popularity</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <script>
+        function loadData() {
+            const fileInput = document.getElementById('jsonFile');
+            const tableBody = document.querySelector('#productTable tbody');
+
+            // Reset table body
+            tableBody.innerHTML = '';
+
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const jsonData = JSON.parse(e.target.result);
+
+                    jsonData.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.Subcategory}</td>
+                            <td>${product.Title}</td>
+                            <td>${product.Price}</td>
+                            <td>${product.Popularity}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                };
+
+                reader.readAsText(file);
+            } else {
+                alert('Please select a JSON file.');
+            }
+        }
+    </script>
+</body>
+</html>
